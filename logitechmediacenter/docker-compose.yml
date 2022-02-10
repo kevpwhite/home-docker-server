@@ -1,0 +1,22 @@
+version: '3'
+services:
+  lms:
+    container_name: lms
+    image: lmscommunity/logitechmediaserver
+    environment:
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 9000:9000/tcp
+      - 9090:9090/tcp
+      - 3483:3483/tcp
+      - 3483:3483/udp
+    restart: always
+    network_mode: host
+    volumes:
+      - /pwd/config/:/config/:rw #Config directory PWD returns current path on linux based systems. You will need to create the config for this to work.
+      # - /<somewhere>:/music:ro
+      # - /<somewhere>:/playlist:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    privileged: true

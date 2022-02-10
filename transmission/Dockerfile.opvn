@@ -1,0 +1,15 @@
+FROM alpine:3
+LABEL maintainer "Kevin White <kevinpwhitejr@gmail.com>"
+LABEL name "openvpn"
+
+#Working Directory
+WORKDIR /usr/app/
+
+COPY ./ipvanish . 
+COPY start_ovpn.sh /etc
+
+#Installs openvpn and wget
+RUN apk add openvpn wget 
+
+#Note: you need to add ca /usr/app/ca.ipvanish.com.crt to all the ipvanish-US-Los-Angeles-lax..... files or the docker image will look for certs in /etc/openvpn/...
+CMD [ "sh", "/etc/start_ovpn.sh" ] 

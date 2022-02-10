@@ -1,0 +1,49 @@
+version: "3"
+services:
+  ipvanish:
+    container_name: ipvanish
+    build: 
+      context: .
+      dockerfile: Dockerfile.opvn
+    cap_add:
+      - NET_ADMIN #Used to allow transmission container to use VPN
+    devices:
+      - /dev/net/tun #VPN tun settings
+    ports: 
+      - 9091:9091
+      - 443:443 
+    dns:
+      - 8.8.8.8 # Default DNS servers
+      - 8.8.4.4
+    networks:
+      - 1_subnet #Gets network setting from below
+    privileged: true #Needed to run openvpn as sudo
+    
+  transmission:
+    container_name: transmission
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    depends_on:
+      - ipvanish #ipvanish container depentancy to start
+    network_mode: service:ipvanish #Gets network mode from ipvanish container
+    volumes:
+      - truenas-share:/mnt/transmission/ #Mount location of the CIFS SMB below called truenas-share
+
+networks:
+  1_subnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.21.0.0/24
+
+#Mounts /mnt/transmission to transmission container
+volumes: 
+  truenas-share: 
+    driver: local
+    driver_opts:
+      type: cifs
+      o: username=$dockerusername,password=$dockerpassword,rw #username and password variable saved in .env file that you need to create. 
+      device: "\\\\10.10.10.11\\share\\staging\\"

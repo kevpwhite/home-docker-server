@@ -1,0 +1,1 @@
+Personal Settings for Logitech Media Center
