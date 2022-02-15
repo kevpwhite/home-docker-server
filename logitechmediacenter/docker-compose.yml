@@ -12,7 +12,6 @@ services:
       - 3483:3483/tcp
       - 3483:3483/udp
     restart: always
-    network_mode: host
     volumes:
       - /pwd/config/:/config/:rw #Config directory PWD returns current path on linux based systems. You will need to create the config for this to work.
       # - /<somewhere>:/music:ro
