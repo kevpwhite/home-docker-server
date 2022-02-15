@@ -3,15 +3,14 @@ services:
   emby:
     image: emby/embyserver:latest
     container_name: embyserver
-    #network_mode: host # Enable DLNA and Wake-on-Lan
+    network_mode: bridge # Enable DLNA and Wake-on-Lan
     environment:
       - UID=1000 # The UID to run emby as (default: 2)
       - GID=100 # The GID to run emby as (default 2)
       - GIDLIST=100 # A comma-separated list of additional GIDs to run emby as (default: 2)
     volumes:
-       - /pwd/config/:/config/:z # Config directory PWD returns current path on linux based systems. You will need to create the config for this to work.
-       - truenas-share:/mnt/tvshows/ # Media directory
-       - truenas-share:/mnt/movies/ # Media directory
+       - /home/kevin/docker/home-docker-server/emby/config:/config/:rw # Config directory PWD returns current path on linux based systems. You will need to create the config for this to work.
+       - truenas-share:/mnt/truenas/ # Media directory
     ports:
       - 8096:8096 # HTTP port
       - 8920:8920 # HTTPS port
@@ -27,4 +26,4 @@ volumes:
     driver_opts:
       type: cifs
       o: username=$dockerusername,password=$dockerpassword,rw
-      device: "\\\\10.10.10.11\\share\\entertainment\\"
+      device: "//10.10.10.11/share"
