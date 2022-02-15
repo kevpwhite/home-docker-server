@@ -9,7 +9,7 @@ services:
       - GID=100 # The GID to run emby as (default 2)
       - GIDLIST=100 # A comma-separated list of additional GIDs to run emby as (default: 2)
     volumes:
-       - /home/kevin/docker/home-docker-server/emby/config:/config/:rw # Config directory PWD returns current path on linux based systems. You will need to create the config for this to work.
+       - ./config:/config/:rw # Config directory
        - truenas-share:/mnt/truenas/ # Media directory
     ports:
       - 8096:8096 # HTTP port
