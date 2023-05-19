@@ -46,4 +46,4 @@ volumes:
     driver_opts:
       type: cifs
       o: username=$dockerusername,password=$dockerpassword,rw #username and password variable saved in .env file that you need to create. 
-      device: "\\\\10.10.10.11\\share\\staging\\"
+      device: "\\\\10.10.10.12\\share\\staging\\"
